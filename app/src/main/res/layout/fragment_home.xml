@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="viewModel"
+            type="com.ivanzolotarovcustomlauncher.ui.home.HomeViewModel"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:id="@+id/main_container"
+        tools:context=".ui.home.HomeFragment">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:text="@{viewModel.currentTime}"
+            android:textColor="@color/white"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="10dp"
+            android:id="@+id/clock_tv"
+            android:textSize="30sp"
+            />
+
+        <ProgressBar
+            android:layout_width="50dp"
+            android:layout_height="5dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:progress="10"
+            android:progressBackgroundTint="@color/light_grey"
+            android:progressTint="@color/green_charge_color"
+            android:id="@+id/charge_pb"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/charge_pb"
+            android:layout_alignStart="@id/charge_pb"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:id="@+id/charge_tv"
+            />
+
+        <ImageButton
+            android:id="@+id/icon_drawer"
+            android:layout_marginBottom="20dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:background="@color/transparent"
+            android:src="@android:drawable/ic_dialog_dialer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_drawer_button_description" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/charge_tv"
+            android:layout_margin="10dp"
+            android:text="@string/add_widget_button_text"
+            android:backgroundTint="@color/dark_grey"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:id="@+id/add_widget_button"
+            />
+    </RelativeLayout>
+</layout>

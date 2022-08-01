@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CustomLauncher</string>
+
+    <string name="add_widget_button_text">Add widget</string>
+    <string name="app_drawer_button_description">Button to open Applications drawer menu</string>
+    <string name="app_icon_description">App icon</string>
 </resources>
