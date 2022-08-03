@@ -13,4 +13,8 @@ class WeatherRepository(private val weatherAPI: WeatherAPI){
         }
         return responses
     }
+
+    suspend fun fetchCityByName(city: String): WeatherAPI.Response {
+        return weatherAPI.getCityInfo(city.lowercase())
+    }
 }

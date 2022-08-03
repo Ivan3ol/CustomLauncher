@@ -5,7 +5,9 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
+import android.util.Log
 import com.ivanzolotarovcustomlauncher.model.data.WeatherInfo
+import com.ivanzolotarovcustomlauncher.utils.APP_TAG
 
 //ContentProvider used as saving data point between WeatherRepository and GridFactory
 class WeatherContentProvider : ContentProvider() {
@@ -21,6 +23,7 @@ class WeatherContentProvider : ContentProvider() {
         const val TEMPERATURE = "temperature"
         const val REGION = "region"
         const val DESCRIPTION = "description"
+        const val UPDATE_TIME = "update_time"
     }
 
     //Required to be overridden
@@ -30,16 +33,18 @@ class WeatherContentProvider : ContentProvider() {
 
     //Returns all saved data, specific queries are not needed by the widget
     override fun query(p0: Uri, p1: Array<out String>?, p2: String?, p3: Array<out String>?, p4: String?): Cursor {
+        Log.d(APP_TAG, "Provider query0")
         val c = MatrixCursor(arrayOf(
             Fields.CITY,
             Fields.REGION,
             Fields.TEMPERATURE,
-            Fields.DESCRIPTION
+            Fields.DESCRIPTION,
+            Fields.UPDATE_TIME
         ))
 
         for (i in data.indices) {
             val data: WeatherInfo = data[i]
-            c.addRow(arrayOf(data.cityName,data.regionName,data.temperature,data.description))
+            c.addRow(arrayOf(data.cityName,data.regionName,data.temperature,data.description,data.updateTime))
         }
         return c
     }
@@ -62,11 +67,13 @@ class WeatherContentProvider : ContentProvider() {
     //Updates existing data or adds new
     override fun update(p0: Uri, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int {
         if(p1!=null){
+            Log.d(APP_TAG, "Provider insert0")
             //Create data object from passed values
             val info = WeatherInfo(p1.getAsString(Fields.CITY),
                 p1.getAsString(Fields.REGION),
                 p1.getAsInteger(Fields.TEMPERATURE),
-                p1.getAsString(Fields.DESCRIPTION))
+                p1.getAsString(Fields.DESCRIPTION),
+                p1.getAsLong(Fields.UPDATE_TIME))
 
             //Look for the saved weather information for the city with the same name,
             //as it is a unique identifier

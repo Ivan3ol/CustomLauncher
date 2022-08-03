@@ -1,12 +1,15 @@
 package com.ivanzolotarovcustomlauncher.model
 
+import android.util.Log
 import com.ivanzolotarovcustomlauncher.model.data.WeatherInfo
+import com.ivanzolotarovcustomlauncher.utils.APP_TAG
 import com.ivanzolotarovcustomlauncher.utils.WEATHER_API_URL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.*
 
 //Class to connect to external API
 class WeatherAPI {
@@ -16,13 +19,15 @@ class WeatherAPI {
                         val errorMessage: String?)
 
     suspend fun getCityInfo(cityName: String): Response {
+        Log.d(APP_TAG,"request made")
         return withContext(Dispatchers.IO) {
             val connection = createConnection(cityName)
                 ?: return@withContext Response(HttpURLConnection.HTTP_GONE,
                     //Capitalising first letter as cityName is currently lowercase
                     WeatherInfo(cityName.replaceFirstChar(Char::titlecase),
                         WeatherInfo.REGION_ERROR_VALUE,0,
-                        WeatherInfo.DESCRIPTION_ERROR_VALUE),
+                        WeatherInfo.DESCRIPTION_ERROR_VALUE,
+                        Date().time),
                     "Connection error")
 
             if (connection.responseCode == HttpURLConnection.HTTP_OK) {
@@ -30,7 +35,8 @@ class WeatherAPI {
                     ?: return@withContext Response(HttpURLConnection.HTTP_GONE,
                         WeatherInfo(cityName.replaceFirstChar(Char::titlecase),
                             WeatherInfo.REGION_ERROR_VALUE,0,
-                            WeatherInfo.DESCRIPTION_ERROR_VALUE),
+                            WeatherInfo.DESCRIPTION_ERROR_VALUE,
+                            Date().time),
                         "Decoding error")
                 return@withContext Response(connection.responseCode, info, null)
 
@@ -38,7 +44,7 @@ class WeatherAPI {
                 return@withContext Response(connection.responseCode,
                     WeatherInfo(cityName.replaceFirstChar(Char::titlecase),
                         WeatherInfo.REGION_ERROR_VALUE,0,
-                        WeatherInfo.DESCRIPTION_ERROR_VALUE),
+                        WeatherInfo.DESCRIPTION_ERROR_VALUE, Date().time),
                     connection.responseMessage)
             }
         }
@@ -71,6 +77,7 @@ class WeatherAPI {
                 response.getString("country"),
                 response.getInt("temperature"),
                 response.getString("description"),
+                Date().time
             )
         }catch (e: Exception){
             null

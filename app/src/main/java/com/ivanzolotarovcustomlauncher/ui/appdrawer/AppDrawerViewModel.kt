@@ -1,17 +1,17 @@
 package com.ivanzolotarovcustomlauncher.ui.appdrawer
 
-import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivanzolotarovcustomlauncher.app.LauncherApplication
+import com.ivanzolotarovcustomlauncher.base.BaseViewModel
 import com.ivanzolotarovcustomlauncher.model.data.AppLaunchInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class AppDrawerViewModel(application: Application) : AndroidViewModel(application) {
+class AppDrawerViewModel : BaseViewModel() {
     var adapter: AppDrawerAdapter = AppDrawerAdapter()
 
     //Start loading apps in constructor, as recycler view is on the screen straightaway after launching the fragment
@@ -24,7 +24,7 @@ class AppDrawerViewModel(application: Application) : AndroidViewModel(applicatio
 
     private suspend fun loadApps(){
         return withContext(Dispatchers.Default){
-            val pm: PackageManager = getApplication<Application>().applicationContext.packageManager
+            val pm: PackageManager = LauncherApplication.instance.packageManager
             val i = Intent(Intent.ACTION_MAIN, null)
             i.addCategory(Intent.CATEGORY_LAUNCHER)
             val allApps = pm.queryIntentActivities(i, 0)

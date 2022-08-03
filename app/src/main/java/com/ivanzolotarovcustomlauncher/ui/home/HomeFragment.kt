@@ -7,6 +7,8 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
@@ -20,6 +22,8 @@ import com.ivanzolotarovcustomlauncher.services.ChargeReceiver
 import com.ivanzolotarovcustomlauncher.services.TimeReceiver
 import com.ivanzolotarovcustomlauncher.widget.WeatherWidget
 import com.ivanzolotarovcustomlauncher.ui.activity.MainActivity
+import com.ivanzolotarovcustomlauncher.utils.APP_TAG
+import kotlin.math.roundToInt
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>() {
@@ -115,10 +119,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>() {
         val hostView = widgetID.let { widgetHost.createView(context, it,widgetInfo) }
         hostView?.setAppWidget(widgetID,widgetInfo)
         //Create parent layout for widget
-        val layoutParams = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        val layoutParams = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         //It should be below clock and battery
         layoutParams.addRule(RelativeLayout.BELOW,R.id.charge_tv)
+        //Margin bottom so that does not overlap app drawer button
+        layoutParams.bottomMargin= TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            55F,
+            context?.resources?.displayMetrics
+        ).roundToInt();
+
         mainContainer.addView(hostView, layoutParams)
+
     }
 
     override fun onStart() {
@@ -136,8 +148,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>() {
 
         for(id in widgetHost.appWidgetIds){
             //Show all widgets saved by host
+            Log.d(APP_TAG,"Home shown0")
             showWidget(id)
-
             //Update all of them
             val intent = Intent(context, WeatherWidget::class.java)
             intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE

@@ -2,10 +2,12 @@ package com.ivanzolotarovcustomlauncher.widget
 
 import android.content.Context
 import android.database.Cursor
+import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.ivanzolotarovcustomlauncher.R
 import com.ivanzolotarovcustomlauncher.model.data.WeatherInfo
+import com.ivanzolotarovcustomlauncher.utils.APP_TAG
 
 class GridRemoteViewsFactory(private val context: Context): RemoteViewsService.RemoteViewsFactory {
     private var mCursor: Cursor? = null
@@ -31,6 +33,7 @@ class GridRemoteViewsFactory(private val context: Context): RemoteViewsService.R
     }
 
     override fun getViewAt(p0: Int): RemoteViews {
+        Log.d(APP_TAG, "Factory 0view$p0")
         //Set default values if any error occur
         var cityName = WeatherInfo.NAME_ERROR_VALUE
         var region = WeatherInfo.REGION_ERROR_VALUE
@@ -38,6 +41,7 @@ class GridRemoteViewsFactory(private val context: Context): RemoteViewsService.R
         var description = WeatherInfo.DESCRIPTION_ERROR_VALUE
 
         if(mCursor?.moveToPosition(p0) == true){
+            Log.d(APP_TAG, "Factory 1view$p0")
             //Get city name from cursor with null checks
             cityName = mCursor?.getColumnIndex(WeatherContentProvider.Fields.CITY)
                 ?.let { mCursor?.getString(it) }.toString()
@@ -45,7 +49,7 @@ class GridRemoteViewsFactory(private val context: Context): RemoteViewsService.R
             region = mCursor?.getColumnIndex(WeatherContentProvider.Fields.REGION)
                 ?.let { mCursor?.getString(it) }.toString()
             //Check whether it is actual weather information or error description
-            if(region!= WeatherInfo.REGION_ERROR_VALUE){
+            if(region!=WeatherInfo.REGION_ERROR_VALUE){
                 //If it is actual weather information then fetch temperature
                 val temperatureInt = mCursor?.getColumnIndex(WeatherContentProvider.Fields.TEMPERATURE)
                     ?.let { mCursor?.getInt(it) }
@@ -56,6 +60,7 @@ class GridRemoteViewsFactory(private val context: Context): RemoteViewsService.R
                     temperatureInt.toString()
                 }
             }
+            Log.d(APP_TAG, "Factory 2view$p0")
             description = mCursor?.getColumnIndex(WeatherContentProvider.Fields.DESCRIPTION)
                 ?.let { mCursor?.getString(it) }.toString()
         }

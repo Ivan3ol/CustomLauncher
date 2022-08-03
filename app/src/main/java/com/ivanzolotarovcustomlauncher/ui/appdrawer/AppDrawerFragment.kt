@@ -12,7 +12,7 @@ class AppDrawerFragment : BaseFragment<FragmentAppDrawerBinding, AppDrawerViewMo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mViewModel = AppDrawerViewModel(LauncherApplication.instance)
+        mViewModel = AppDrawerViewModel()
         mBinding.viewModel = mViewModel
     }
 

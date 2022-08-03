@@ -6,6 +6,7 @@ data class WeatherInfo(
     var regionName: CharSequence,
     var temperature: Int,
     var description: CharSequence,
+    var updateTime: Long
 ){
     companion object{
         //Values to be used if error occurred while fetching data

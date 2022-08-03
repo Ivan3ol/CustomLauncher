@@ -54,12 +54,12 @@
         <ImageButton
             android:id="@+id/icon_drawer"
             android:layout_marginBottom="20dp"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:background="@color/transparent"
             android:src="@android:drawable/ic_dialog_dialer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:contentDescription="@string/app_drawer_button_description" />
 
         <Button
